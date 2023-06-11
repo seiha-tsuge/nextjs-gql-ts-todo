@@ -99,3 +99,46 @@ export const useRemoveTodoMutation = () => {
 
   return { removeTodo, data, loading, error };
 };
+
+export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
+export type UpdateTodoInput = {
+  isCompleted?: InputMaybe<Scalars["Boolean"]>;
+  title?: InputMaybe<Scalars["String"]>;
+  todoId: Scalars["String"];
+};
+
+export const UpdateTodoDocument = gql`
+  mutation UpdateTodo($updateTodoInput: UpdateTodoInput!) {
+    updateTodo(updateTodoInput: $updateTodoInput) {
+      todo {
+        id
+        title
+        isCompleted
+        updatedAt
+        createdAt
+      }
+    }
+  }
+`;
+
+export const useUpdateTodoCompleteStatus = () => {
+  const [mutateFunction, { data, loading, error }] =
+    useMutation(UpdateTodoDocument);
+
+  const updateTodoCompleteStatus = (id: string, isCompleted: boolean) => {
+    const updateTodoCompleteStatus = mutateFunction({
+      variables: {
+        updateTodoInput: {
+          todoId: id,
+          isCompleted,
+        },
+      },
+      refetchQueries: [getTodosQuery],
+    });
+
+    return updateTodoCompleteStatus;
+  };
+
+  return { updateTodoCompleteStatus, data, loading, error };
+};
