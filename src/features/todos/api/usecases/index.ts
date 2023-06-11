@@ -31,3 +31,36 @@ export type MakeTodoInput = {
   title: Scalars["String"];
 };
 
+export const MakeTodoDocument = gql`
+  mutation MakeTodo($makeTodoInput: MakeTodoInput!) {
+    makeTodo(makeTodoInput: $makeTodoInput) {
+      todo {
+        id
+        title
+        isCompleted
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+export const useMakeTodoMutation = () => {
+  const [mutateFunction, { data, loading, error }] =
+    useMutation(MakeTodoDocument);
+
+  const makeTodo = (title: string) => {
+    const makeTodo = mutateFunction({
+      variables: {
+        makeTodoInput: {
+          title,
+        },
+      },
+      refetchQueries: [getTodosQuery],
+    });
+
+    return makeTodo;
+  };
+
+  return { makeTodo, data, loading, error };
+};
