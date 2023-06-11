@@ -16,6 +16,7 @@ export const useStyles = createStyles(
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
+      gap: theme.spacing.md,
       padding: theme.spacing.xl,
       borderLeftWidth: rem(8),
       borderLeftStyle: "solid",
@@ -26,6 +27,7 @@ export const useStyles = createStyles(
     },
 
     todoItem: {
+      width: "100%",
       display: "flex",
       alignItems: "center",
       gap: theme.spacing.md,
@@ -37,6 +39,7 @@ export const useStyles = createStyles(
     },
 
     dataBlock: {
+      width: "100%",
       display: "flex",
       flexDirection: "column",
       gap: rem(4),

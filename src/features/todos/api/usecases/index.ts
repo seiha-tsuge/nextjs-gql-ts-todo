@@ -142,3 +142,24 @@ export const useUpdateTodoCompleteStatus = () => {
 
   return { updateTodoCompleteStatus, data, loading, error };
 };
+
+export const useUpdateTodoTitle = () => {
+  const [mutateFunction, { data, loading, error }] =
+    useMutation(UpdateTodoDocument);
+
+  const updateTodoTitle = (id: string, title: string) => {
+    const updateTodoTitle = mutateFunction({
+      variables: {
+        updateTodoInput: {
+          todoId: id,
+          title,
+        },
+      },
+      refetchQueries: [getTodosQuery],
+    });
+
+    return updateTodoTitle;
+  };
+
+  return { updateTodoTitle, data, loading, error };
+};

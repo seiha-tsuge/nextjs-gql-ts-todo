@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Checkbox, Menu, Text, ActionIcon } from "@/components/shared";
+import {
+  Checkbox,
+  Menu,
+  Text,
+  ActionIcon,
+  TextInput,
+} from "@/components/shared";
 import { IconDots, IconPencil, IconTrash } from "@/components/icons";
 
 import {
   useRemoveTodoMutation,
   useUpdateTodoCompleteStatus,
+  useUpdateTodoTitle,
 } from "@/features/todos/api/usecases";
 
 import { useTodoForm } from "@/features/todos/form";
@@ -20,6 +27,8 @@ interface TodoItemProps {
 }
 
 export const TodoItem = ({ id, title, date, completed }: TodoItemProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+
   const form = useTodoForm({ title, completed });
 
   const { removeTodo } = useRemoveTodoMutation();
@@ -34,6 +43,16 @@ export const TodoItem = ({ id, title, date, completed }: TodoItemProps) => {
     await updateTodoCompleteStatus(id, event.target.checked);
   };
 
+  const { updateTodoTitle } = useUpdateTodoTitle();
+  const handleTodoTitleInputBlur: React.FocusEventHandler<
+    HTMLInputElement
+  > = async (event) => {
+    form.validate();
+    if (!form.isValid()) return;
+    await updateTodoTitle(id, form.getInputProps("title").value);
+    setIsEditing(false);
+  };
+
   const { classes } = useStyles({ completed });
 
   return (
@@ -44,9 +63,17 @@ export const TodoItem = ({ id, title, date, completed }: TodoItemProps) => {
           onChange={handleCompleteTodoCheckboxChange}
         />
         <div className={classes.dataBlock}>
-          <Text inline className={classes.title}>
-            {title}
-          </Text>
+          {isEditing ? (
+            <TextInput
+              {...form.getInputProps("title")}
+              autoFocus
+              onBlur={handleTodoTitleInputBlur}
+            />
+          ) : (
+            <Text inline className={classes.title}>
+              {title}
+            </Text>
+          )}
           <Text
             inline
             {...form.getInputProps("title")}
@@ -67,6 +94,7 @@ export const TodoItem = ({ id, title, date, completed }: TodoItemProps) => {
         <Menu.Dropdown>
           <Menu.Item
             rightSection={<IconPencil className={classes.iconPencil} />}
+            onClick={() => setIsEditing(true)}
           >
             Edit
           </Menu.Item>
