@@ -1,22 +1,31 @@
 import React from "react";
 
-import { Checkbox, Menu, Text, Button, ActionIcon } from "@/components/shared";
+import { Checkbox, Menu, Text, ActionIcon } from "@/components/shared";
 import { IconDots, IconPencil, IconTrash } from "@/components/icons";
+
+import { useRemoveTodoMutation } from "@/features/todos/api/usecases";
 
 import { useStyles } from "./TodoItem.styles";
 
 interface TodoItemProps {
+  id: string;
   title: string;
   date: string;
   completed?: boolean;
 }
 
-export const TodoItem = ({ title, date, completed }: TodoItemProps) => {
+export const TodoItem = ({ id, title, date, completed }: TodoItemProps) => {
+  const { removeTodo } = useRemoveTodoMutation();
+  const handleRemoveTodo = async () => {
+    await removeTodo(id);
+  };
+
   const { classes } = useStyles({ completed });
+
   return (
     <div className={classes.root}>
       <div className={classes.todoItem}>
-        <Checkbox />
+        <Checkbox checked={completed} />
         <div className={classes.dataBlock}>
           <Text inline className={classes.title}>
             {title}
@@ -40,7 +49,10 @@ export const TodoItem = ({ title, date, completed }: TodoItemProps) => {
           >
             Edit
           </Menu.Item>
-          <Menu.Item rightSection={<IconTrash className={classes.iconTrash} />}>
+          <Menu.Item
+            rightSection={<IconTrash className={classes.iconTrash} />}
+            onClick={handleRemoveTodo}
+          >
             Remove
           </Menu.Item>
         </Menu.Dropdown>

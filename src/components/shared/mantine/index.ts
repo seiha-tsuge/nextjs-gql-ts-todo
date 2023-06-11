@@ -9,3 +9,4 @@ export * from "./Menu";
 export * from "./Paper";
 export * from "./Text";
 export * from "./TextInput";
+export * from "./UnstyledButton";

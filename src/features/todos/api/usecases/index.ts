@@ -64,3 +64,38 @@ export const useMakeTodoMutation = () => {
 
   return { makeTodo, data, loading, error };
 };
+
+export type RemoveTodoInput = {
+  todoId: Scalars["String"];
+};
+
+export const RemoveTodoDocument = gql`
+  mutation RemoveTodo($removeTodoInput: RemoveTodoInput!) {
+    removeTodo(removeTodoInput: $removeTodoInput) {
+      todo {
+        id
+        title
+      }
+    }
+  }
+`;
+
+export const useRemoveTodoMutation = () => {
+  const [mutateFunction, { data, loading, error }] =
+    useMutation(RemoveTodoDocument);
+
+  const removeTodo = (id: string) => {
+    const removeTodo = mutateFunction({
+      variables: {
+        removeTodoInput: {
+          todoId: id,
+        },
+      },
+      refetchQueries: [getTodosQuery],
+    });
+
+    return removeTodo;
+  };
+
+  return { removeTodo, data, loading, error };
+};

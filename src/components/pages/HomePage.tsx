@@ -17,6 +17,7 @@ export const HomePage = () => {
         {data?.getTodos?.todos?.map((todo) => (
           <TodoItem
             key={todo.id}
+            id={todo.id}
             title={todo.title}
             date={todo.updatedAt}
             completed={todo.isCompleted}
