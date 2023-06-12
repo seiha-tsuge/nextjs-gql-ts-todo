@@ -6,16 +6,24 @@ import { Text, TextInput, Button } from "@/components/shared";
 
 import { useMakeTodoForm } from "@/features/todos/form";
 // import { useMakeTodoMutation } from "@/features/todos/api/usecases/apollo";
-import { useMakeTodoMutation } from "@/features/todos/api/usecases/urql";
+// import { useMakeTodoMutation } from "@/features/todos/api/usecases/urql";
+import { useMakeTodoMutation } from "@/features/todos/api/usecases/react-query";
 
 import type { MakeTodoForm } from "@/features/todos/form/types";
 
 export const AddTodoForm = () => {
   const form = useMakeTodoForm();
 
+  // apollo, urql
+  // const { makeTodo } = useMakeTodoMutation();
+  // const handleSubmit = async (values: MakeTodoForm) => {
+  //   await makeTodo(values.title);
+  //   form.reset();
+  // };
+
   const { makeTodo } = useMakeTodoMutation();
   const handleSubmit = async (values: MakeTodoForm) => {
-    await makeTodo(values.title);
+    await makeTodo.mutate(values.title);
     form.reset();
   };
 

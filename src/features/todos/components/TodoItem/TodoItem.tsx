@@ -15,11 +15,17 @@ import { IconDots, IconPencil, IconTrash } from "@/components/icons";
 //   useUpdateTodoTitle,
 // } from "@/features/todos/api/usecases/apollo";
 
+// import {
+//   useRemoveTodoMutation,
+//   useUpdateTodoCompleteStatus,
+//   useUpdateTodoTitle,
+// } from "@/features/todos/api/usecases/urql";
+
 import {
   useRemoveTodoMutation,
   useUpdateTodoCompleteStatus,
   useUpdateTodoTitle,
-} from "@/features/todos/api/usecases/urql";
+} from "@/features/todos/api/usecases/react-query";
 
 import { useTodoForm } from "@/features/todos/form";
 
@@ -39,14 +45,22 @@ export const TodoItem = ({ id, title, date, completed }: TodoItemProps) => {
 
   const { removeTodo } = useRemoveTodoMutation();
   const handleRemoveTodo = async () => {
-    await removeTodo(id);
+    // apollo, urql
+    // await removeTodo(id);
+
+    await removeTodo.mutateAsync(id);
   };
 
   const { updateTodoCompleteStatus } = useUpdateTodoCompleteStatus();
   const handleCompleteTodoCheckboxChange: React.ChangeEventHandler<
     HTMLInputElement
   > = async (event) => {
-    await updateTodoCompleteStatus(id, event.target.checked);
+    // apollo, urql
+    // await updateTodoCompleteStatus(id, event.target.checked);
+    await updateTodoCompleteStatus.mutate({
+      id,
+      isCompleted: event.target.checked,
+    });
   };
 
   const { updateTodoTitle } = useUpdateTodoTitle();
@@ -55,7 +69,12 @@ export const TodoItem = ({ id, title, date, completed }: TodoItemProps) => {
   > = async (event) => {
     form.validate();
     if (!form.isValid()) return;
-    await updateTodoTitle(id, form.getInputProps("title").value);
+    // apollo, urql
+    // await updateTodoTitle(id, form.getInputProps("title").value);
+    await updateTodoTitle.mutate({
+      id,
+      title: form.getInputProps("title").value,
+    });
     setIsEditing(false);
   };
 
