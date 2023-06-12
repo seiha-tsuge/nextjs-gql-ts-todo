@@ -4,10 +4,16 @@ import { useStyles } from "./HomePage.styles";
 
 import { AddTodoForm, TodoItem } from "@/features/todos/components";
 
-import { useTodosQuery } from "@/features/todos/api/usecases";
+// import { useTodosQuery } from "@/features/todos/api/usecases/apollo";
+import { useTodosQuery } from "@/features/todos/api/usecases/urql";
 
 export const HomePage = () => {
-  const { data } = useTodosQuery();
+  // apollo
+  // const { data } = useTodosQuery();
+
+  // urql
+  const [result] = useTodosQuery();
+  const { data } = result;
   const { classes } = useStyles();
 
   return (
