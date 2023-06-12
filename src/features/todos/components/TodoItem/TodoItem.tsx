@@ -9,11 +9,17 @@ import {
 } from "@/components/shared";
 import { IconDots, IconPencil, IconTrash } from "@/components/icons";
 
+// import {
+//   useRemoveTodoMutation,
+//   useUpdateTodoCompleteStatus,
+//   useUpdateTodoTitle,
+// } from "@/features/todos/api/usecases/apollo";
+
 import {
   useRemoveTodoMutation,
   useUpdateTodoCompleteStatus,
   useUpdateTodoTitle,
-} from "@/features/todos/api/usecases";
+} from "@/features/todos/api/usecases/urql";
 
 import { useTodoForm } from "@/features/todos/form";
 
