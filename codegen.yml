@@ -3,5 +3,8 @@ schema: "http://localhost:5555/graphql"
 documents: "src/**/*.graphql"
 generates:
   src/generated/gql/:
+    config:
+      scalars:
+        DateTime: "Date"
     preset: "client"
     plugins: []
