@@ -3,29 +3,12 @@ import { queryClient } from "@/libraries/react-query";
 
 import { gql } from "graphql-request";
 import { graphQLClient } from "@/libraries/graphql-request";
-
-export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  DateTime: Date;
-};
-
-const getTodosQuery = gql`
-  query Todos {
-    getTodos {
-      todos {
-        id
-        title
-        isCompleted
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
+import { getTodosQuery } from "@/features/todos/api/graphql/queries";
+import {
+  MakeTodoDocument,
+  RemoveTodoDocument,
+  UpdateTodoDocument,
+} from "@/features/todos/api/graphql/mutations";
 
 const fetch = async () => {
   const data = await graphQLClient.request(getTodosQuery);
@@ -38,24 +21,6 @@ export const useTodosQuery = () => {
     queryFn: () => fetch(),
   });
 };
-
-export type MakeTodoInput = {
-  title: Scalars["String"];
-};
-
-export const MakeTodoDocument = gql`
-  mutation MakeTodo($makeTodoInput: MakeTodoInput!) {
-    makeTodo(makeTodoInput: $makeTodoInput) {
-      todo {
-        id
-        title
-        isCompleted
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
 
 const create = async (title: string) => {
   const variables = {
@@ -75,17 +40,6 @@ export const useMakeTodoMutation = () => {
 
   return { makeTodo };
 };
-
-export const RemoveTodoDocument = gql`
-  mutation RemoveTodo($removeTodoInput: RemoveTodoInput!) {
-    removeTodo(removeTodoInput: $removeTodoInput) {
-      todo {
-        id
-        title
-      }
-    }
-  }
-`;
 
 const deleteTodo = async (id: string) => {
   const variables = {
@@ -107,28 +61,6 @@ export const useRemoveTodoMutation = () => {
 
   return { removeTodo };
 };
-
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
-export type UpdateTodoInput = {
-  isCompleted?: InputMaybe<Scalars["Boolean"]>;
-  title?: InputMaybe<Scalars["String"]>;
-  todoId: Scalars["String"];
-};
-
-export const UpdateTodoDocument = gql`
-  mutation UpdateTodo($updateTodoInput: UpdateTodoInput!) {
-    updateTodo(updateTodoInput: $updateTodoInput) {
-      todo {
-        id
-        title
-        isCompleted
-        updatedAt
-        createdAt
-      }
-    }
-  }
-`;
 
 const completeStatus = async (id: string, isCompleted: boolean) => {
   const variables = {
