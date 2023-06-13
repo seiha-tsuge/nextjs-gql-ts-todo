@@ -1,7 +1,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/libraries/react-query";
 
-import { gql } from "graphql-request";
 import { graphQLClient } from "@/libraries/graphql-request";
 import { getTodosQuery } from "@/features/todos/api/graphql/queries";
 import {
