@@ -14,7 +14,7 @@ import type {
 
 const db = factory({
   todos: {
-    id: primaryKey(faker.datatype.uuid),
+    id: primaryKey(faker.string.uuid),
     title: () => faker.string.alpha(10),
     isCompleted: Boolean,
     createdAt: () => new Date().toISOString(),
